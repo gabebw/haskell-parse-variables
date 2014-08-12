@@ -1,11 +1,9 @@
 module ParseVariable where
 
-import Data.Char (isUpper)
-
 type Variable = (String, String)
 
 parseVariable :: String -> Maybe Variable
-parseVariable (' ':xs) = Nothing
+parseVariable (' ':_) = Nothing
 parseVariable s = Just (key clean, value clean)
   where clean = removeJunk s
 
@@ -13,7 +11,7 @@ removeJunk :: String -> String
 removeJunk = withoutQuotes . withoutEndingNewline . withoutBeginningExport
 
 key :: String -> String
-key = (takeWhile notEqualsSign)
+key = takeWhile notEqualsSign
 
 value :: String -> String
 value = reverse . takeWhile notEqualsSign . reverse
