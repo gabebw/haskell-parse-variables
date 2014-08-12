@@ -6,16 +6,17 @@ type Variable = (String, String)
 
 parseVariable :: String -> Maybe Variable
 parseVariable (' ':xs) = Nothing
-parseVariable s = Just (key s, value s)
+parseVariable s = Just (key clean, value clean)
+  where clean = removeJunk s
 
 removeJunk :: String -> String
 removeJunk = withoutQuotes . withoutEndingNewline . withoutBeginningExport
 
 key :: String -> String
-key = (takeWhile notEqualsSign) . removeJunk
+key = (takeWhile notEqualsSign)
 
 value :: String -> String
-value = reverse . takeWhile notEqualsSign . reverse . removeJunk
+value = reverse . takeWhile notEqualsSign . reverse
 
 notEqualsSign :: Char -> Bool
 notEqualsSign = (/= '=')
