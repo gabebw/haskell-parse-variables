@@ -29,8 +29,8 @@ withoutQuotes = filter (/='"') . filter (/= '\'')
 
 withoutBeginningExport :: String -> String
 withoutBeginningExport s
-  | startsWithExport s = drop 7 s
+  | startsWithExport s = drop (length "export ") s
   | otherwise = s
 
 startsWithExport :: String -> Bool
-startsWithExport s = "export" == take 6 s
+startsWithExport s = "export" == take (length "export") s
