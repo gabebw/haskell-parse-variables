@@ -1,3 +1,5 @@
+-- Idea: Parse string into ("Foo ", "=", "Bar") and then if there are spaces in
+-- first element or third element, that's no good
 module ParseVariable where
 
 type Variable = (String, String)
