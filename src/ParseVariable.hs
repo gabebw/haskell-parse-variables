@@ -3,42 +3,21 @@
 module ParseVariable where
 
 type Variable = (String, String)
+type Key = String
+type Value = String
 
 parseVariable :: String -> Maybe Variable
 parseVariable (' ':_) = Nothing
-parseVariable s
-  | hasMatchingQuotes valueWithQuotes = Just (key clean, value clean)
-  | otherwise = Nothing
-    where
-      valueWithQuotes = value clean
-      clean = removeJunk s
-
-removeJunk :: String -> String
-removeJunk = withoutEndingNewline . withoutBeginningExport
-
-key :: String -> String
-key = takeWhile notEqualsSign
-
-value :: String -> String
-value = reverse . takeWhile notEqualsSign . reverse
-
-notEqualsSign :: Char -> Bool
-notEqualsSign = (/= '=')
-
-withoutEndingNewline :: String -> String
-withoutEndingNewline = takeWhile (/= '\n')
-
-withoutBeginningExport :: String -> String
-withoutBeginningExport s
-  | startsWithExport s = drop (length "export ") s
-  | otherwise = s
-
-hasMatchingQuotes :: String -> Bool
-hasMatchingQuotes ('"':xs) = last xs == '"'
-hasMatchingQuotes ('\'':xs) = last xs == '\''
-hasMatchingQuotes (x:xs) = not lastIsQuote
+parseVariable s = Just (key, value)
   where
-    lastIsQuote = last xs == '\'' || last xs == '"'
+    key = keyAndValue !! 0
+    value = keyAndValue !! 1
+    keyAndValue = split s
 
-startsWithExport :: String -> Bool
-startsWithExport s = "export" == take (length "export") s
+
+split :: String -> [String]
+split s = [left, right]
+  where
+    left = takeWhile (/= '=') s
+    right = withoutNewline $ reverse $ takeWhile (/= '=') $ reverse s
+    withoutNewline = takeWhile (/='\n')
