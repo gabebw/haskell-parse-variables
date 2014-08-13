@@ -10,13 +10,12 @@ parseVariable :: String -> Maybe Variable
 parseVariable (' ':_) = Nothing
 parseVariable s = Just (key, value)
   where
-    key = keyAndValue !! 0
-    value = keyAndValue !! 1
+    key = fst keyAndValue
+    value = snd keyAndValue
     keyAndValue = split s
 
-
-split :: String -> [String]
-split s = [left, right]
+split :: String -> (Key, Value)
+split s = (left, right)
   where
     left = takeWhile (/= '=') s
     right = withoutNewline $ reverse $ takeWhile (/= '=') $ reverse s
