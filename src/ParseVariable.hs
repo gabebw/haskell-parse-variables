@@ -11,9 +11,8 @@ parseVariable s = processVariable (key withoutExport, value withoutExport)
     withoutExport = removeFromBeginningOf "export " s
 
 processVariable :: (Maybe Key, Maybe Value) -> Maybe Variable
-processVariable (Nothing, _) = Nothing
-processVariable (_, Nothing) = Nothing
 processVariable (Just k, Just v) = Just (k, v)
+processVariable _ = Nothing
 
 splitOnEquals :: String -> (Key, Value)
 splitOnEquals s = (left, right)
