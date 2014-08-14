@@ -34,9 +34,9 @@ key s
 value :: String -> Maybe Value
 value (' ':_) = Nothing
 value s
-  | hasSpace s = Nothing
-  | mismatchedQuotes s = Nothing
-  | otherwise = Just right
+  | hasSpace right = Nothing
+  | mismatchedQuotes right = Nothing
+  | otherwise = Just $ removeQuotes right
   where
     right = snd $ splitOnEquals s
 
@@ -46,13 +46,16 @@ hasSpace = (' ' `elem`)
 mismatchedQuotes :: Value -> Bool
 mismatchedQuotes ('\'':xs) = last xs /= '\''
 mismatchedQuotes ('"':xs) = last xs /= '"'
-mismatchedQuotes v = (containsDoubleQuote v) || (containsSingleQuote v)
+mismatchedQuotes v = containsDoubleQuote v || containsSingleQuote v
 
 containsSingleQuote :: Value -> Bool
 containsSingleQuote s = '\'' `elem` s
 
 containsDoubleQuote :: Value -> Bool
 containsDoubleQuote s = '"' `elem` s
+
+removeQuotes :: Value -> Value
+removeQuotes = filter (/='\'') . filter (/='"')
 
 removeFromBeginningOf :: String -> Value -> Value
 removeFromBeginningOf s v
