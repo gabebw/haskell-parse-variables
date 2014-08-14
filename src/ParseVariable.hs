@@ -12,10 +12,10 @@ parseVariable s = Just (key, value)
   where
     key = fst keyAndValue
     value = snd keyAndValue
-    keyAndValue = split s
+    keyAndValue = splitOnEquals s
 
-split :: String -> (Key, Value)
-split s = (left, right)
+splitOnEquals :: String -> (Key, Value)
+splitOnEquals s = (left, right)
   where
     left = takeWhile (/= '=') s
     right = withoutNewline $ reverse $ takeWhile (/= '=') $ reverse s
