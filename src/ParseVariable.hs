@@ -27,7 +27,7 @@ key s
   | hasSpace left = Nothing
   | otherwise = Just left
   where
-    left = removeFromBeginningOf "export " $ fst $ splitOnEquals s
+    left = fst $ splitOnEquals s
 
 value :: String -> Maybe Value
 value (' ':_) = Nothing
