@@ -35,6 +35,7 @@ value :: String -> Maybe Value
 value (' ':_) = Nothing
 value s
   | hasSpace s = Nothing
+  | mismatchedQuotes s = Nothing
   | otherwise = Just right
   where
     right = snd $ splitOnEquals s
@@ -42,10 +43,10 @@ value s
 hasSpace :: String -> Bool
 hasSpace = (' ' `elem`)
 
-matchingQuotes :: Value -> Bool
-matchingQuotes ('\'':xs) = last xs == '\'' && not (containsSingleQuote (init xs))
-matchingQuotes ('"':xs) = last xs == '"' && not (containsDoubleQuote (init xs))
-matchingQuotes v = not ((containsDoubleQuote v) || (containsSingleQuote v))
+mismatchedQuotes :: Value -> Bool
+mismatchedQuotes ('\'':xs) = last xs /= '\''
+mismatchedQuotes ('"':xs) = last xs /= '"'
+mismatchedQuotes v = (containsDoubleQuote v) || (containsSingleQuote v)
 
 containsSingleQuote :: Value -> Bool
 containsSingleQuote s = '\'' `elem` s
