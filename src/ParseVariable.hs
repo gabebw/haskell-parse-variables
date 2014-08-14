@@ -20,3 +20,11 @@ splitOnEquals s = (left, right)
     left = takeWhile (/= '=') s
     right = withoutNewline $ reverse $ takeWhile (/= '=') $ reverse s
     withoutNewline = takeWhile (/='\n')
+
+matchingQuotes :: Value -> Bool
+matchingQuotes ('\'':xs) = last xs == '\'' && not (containsSingleQuote (init xs))
+matchingQuotes ('"':xs) = last xs == '"' && not (containsDoubleQuote (init xs))
+matchingQuotes v = not ((containsDoubleQuote v) || (containsSingleQuote v))
+
+containsSingleQuote s = '\'' `elem` s
+containsDoubleQuote s = '"' `elem` s
