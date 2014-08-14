@@ -1,7 +1,5 @@
 module ParseVariable where
 
-import Data.Maybe (fromJust)
-
 type Variable = (String, String)
 type Key = String
 type Value = String
