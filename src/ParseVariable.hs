@@ -1,8 +1,8 @@
 module ParseVariable where
 
-type Variable = (String, String)
 type Key = String
 type Value = String
+type Variable = (Key, Value)
 
 parseVariable :: String -> Maybe Variable
 parseVariable (' ':_) = Nothing
