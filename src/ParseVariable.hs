@@ -57,6 +57,6 @@ removeQuotes :: Value -> Value
 removeQuotes = filter (/='\'') . filter (/='"')
 
 removeFromBeginningOf :: String -> Value -> Value
-removeFromBeginningOf s v
-  | isPrefixOf s v = drop (length s) v
+removeFromBeginningOf prefix v
+  | isPrefixOf prefix v = drop (length prefix) v
   | otherwise = v
