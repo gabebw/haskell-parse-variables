@@ -1,5 +1,7 @@
 module ParseVariable where
 
+import Data.List (isPrefixOf)
+
 type Key = String
 type Value = String
 type Variable = (Key, Value)
@@ -46,17 +48,15 @@ mismatchedQuotes ('"':xs) = last xs /= '"'
 mismatchedQuotes v = containsDoubleQuote v || containsSingleQuote v
 
 containsSingleQuote :: Value -> Bool
-containsSingleQuote s = '\'' `elem` s
+containsSingleQuote = ('\'' `elem`)
 
 containsDoubleQuote :: Value -> Bool
-containsDoubleQuote s = '"' `elem` s
+containsDoubleQuote = ('"' `elem`)
 
 removeQuotes :: Value -> Value
 removeQuotes = filter (/='\'') . filter (/='"')
 
 removeFromBeginningOf :: String -> Value -> Value
 removeFromBeginningOf s v
-  | hasPrefix = drop (length s) v
+  | isPrefixOf s v = drop (length s) v
   | otherwise = v
-  where
-    hasPrefix = take (length s) v == s
